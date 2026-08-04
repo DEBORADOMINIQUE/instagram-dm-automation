@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel de Automação</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ==========================================================================
+       PÁGINA 1: LOGIN
+       ========================================================================== -->
+  <div id="tela-login" class="tela-login">
+    <div class="caixa-login">
+      <div class="logo-login"></div>
+      <h1>Entrar no painel</h1>
+      <p class="subtitulo">Acesse pra gerenciar suas automações do Instagram</p>
+
+      <div id="aviso-modo-local" class="aviso aviso-info" style="margin-bottom:18px; display:none;">
+        Modo de teste local: qualquer e-mail e uma senha de 5 dígitos entram. No ar (produção), o login será pelo Supabase.
+      </div>
+
+      <form id="form-login">
+        <div class="campo">
+          <label for="login-email">E-mail</label>
+          <input type="email" id="login-email" autocomplete="username" required />
+        </div>
+        <div class="campo">
+          <label for="login-senha">Senha</label>
+          <input type="password" id="login-senha" autocomplete="current-password" required />
+        </div>
+        <div id="erro-login" class="aviso aviso-erro escondido" style="margin-bottom:14px;"></div>
+        <button type="submit" class="btn btn-primario btn-bloco">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       PÁGINA 2: O SISTEMA (depois de logado)
+       ========================================================================== -->
+  <div id="tela-app" class="shell escondido">
+    <aside class="sidebar">
+      <div class="marca">
+        <div class="ponto"></div>
+        <span>Seu painel</span>
+      </div>
+
+      <nav class="sidebar-nav" style="flex:1;">
+        <div class="nav-item ativo" data-pagina="inicio">
+          <span class="icone">◧</span> Início
+        </div>
+        <div class="nav-item" data-pagina="calendario">
+          <span class="icone">▤</span> Calendário
+        </div>
+        <div class="nav-item" data-pagina="instagram">
+          <span class="icone">◎</span> Instagram
+        </div>
+      </nav>
+
+      <div class="sidebar-rodape">
+        <div class="nav-item" id="btn-sair">
+          <span class="icone">⏻</span> Sair
+        </div>
+      </div>
+    </aside>
+
+    <main class="conteudo">
+
+      <div id="aviso-modo-local-app" class="aviso aviso-info escondido" style="margin-bottom:20px;">
+        Você está no modo de teste local. Pra colocar no ar de verdade (com login e dados salvos), siga o LEIA-ME.
+      </div>
+
+      <!-- ---------------- PÁGINA: INÍCIO ---------------- -->
+      <section id="pagina-inicio">
+        <div class="cabecalho-pagina">
+          <div>
+            <h1 class="titulo-pagina">Bem-vindo ao seu painel</h1>
+            <p class="subtitulo">Um resumo rápido do que está acontecendo</p>
+          </div>
+        </div>
+
+        <div class="grade-cartoes" style="margin-bottom:24px;">
+          <div class="cartao">
+            <div class="rotulo">Leads captados</div>
+            <div class="cartao-numero" id="numero-leads">0</div>
+          </div>
+          <div class="cartao">
+            <div class="rotulo">Automações ativas</div>
+            <div class="cartao-numero" id="numero-automacoes-ativas">0</div>
+          </div>
+          <div class="cartao">
+            <div class="rotulo">DMs enviadas (7 dias)</div>
+            <div class="cartao-numero" id="numero-dms-7dias">0</div>
+          </div>
+        </div>
+
+        <div class="cartao">
+          <h3 style="margin-bottom:12px;">Atalhos</h3>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn" data-ir-para="instagram">Ir pra Instagram</button>
+            <button class="btn" data-ir-para="calendario">Ir pro Calendário</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------------- PÁGINA: CALENDÁRIO (placeholder) ---------------- -->
+      <section id="pagina-calendario" class="escondido">
+        <div class="placeholder-em-breve">
+          <div class="emoji">🗓️</div>
+          <h2>Calendário</h2>
+          <p class="subtitulo">Essa área vai chegar em breve pra você planejar seus conteúdos</p>
+        </div>
+      </section>
+
+      <!-- ---------------- PÁGINA: INSTAGRAM ---------------- -->
+      <section id="pagina-instagram" class="escondido">
+        <div class="cabecalho-pagina">
+          <div>
+            <h1 class="titulo-pagina">Instagram</h1>
+            <p class="subtitulo">Métricas e automações da sua conta</p>
+          </div>
+        </div>
+
+        <div class="abas">
+          <div class="aba ativa" data-aba="metricas">Métricas</div>
+          <div class="aba" data-aba="automacoes">Automações</div>
+        </div>
+
+        <!-- SUB-ABA: MÉTRICAS -->
+        <div id="aba-metricas">
+          <div id="metricas-vazio" class="cartao estado-vazio escondido">
+            <div class="emoji">📊</div>
+            <h3>Conecte seu Instagram pra ver as métricas</h3>
+            <p class="subtitulo">Preencha as variáveis de ambiente da API do Instagram (veja o LEIA-ME) pra esses números aparecerem aqui.</p>
+          </div>
+
+          <div id="metricas-conteudo" class="escondido">
+            <div class="grade-cartoes" style="margin-bottom:20px;">
+              <div class="cartao">
+                <div class="rotulo">Seguidores</div>
+                <div class="cartao-numero" id="metrica-seguidores">0</div>
+              </div>
+              <div class="cartao">
+                <div class="rotulo">Leads captados</div>
+                <div class="cartao-numero" id="metrica-leads">0</div>
+              </div>
+            </div>
+
+            <div class="grade-cartoes">
+              <div class="cartao">
+                <div class="rotulo">Novos seguidores por dia (últimos 15 dias)</div>
+                <div class="grafico-barras" id="grafico-seguidores"></div>
+              </div>
+              <div class="cartao">
+                <div class="rotulo">Alcance por dia (últimos 15 dias)</div>
+                <div class="grafico-barras" id="grafico-alcance"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUB-ABA: AUTOMAÇÕES -->
+        <div id="aba-automacoes" class="escondido">
+          <div class="cabecalho-pagina">
+            <div></div>
+            <button class="btn btn-primario" id="btn-nova-automacao">+ Nova automação</button>
+          </div>
+
+          <div id="automacoes-vazio" class="cartao estado-vazio escondido">
+            <div class="emoji">💬</div>
+            <h3>Nenhuma automação ainda</h3>
+            <p class="subtitulo">Crie a primeira automação pra responder DMs automaticamente quando alguém comentar.</p>
+          </div>
+
+          <div id="lista-automacoes" class="lista-automacoes"></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: EDITOR DE AUTOMAÇÃO
+       ========================================================================== -->
+  <div id="modal-editor" class="modal-fundo escondido">
+    <div class="modal-editor">
+      <div class="modal-editor-cabecalho">
+        <h2 id="editor-titulo">Nova automação</h2>
+        <button class="btn btn-texto" id="btn-fechar-editor">✕ Fechar</button>
+      </div>
+
+      <div class="modal-editor-corpo">
+        <div class="modal-editor-formulario">
+
+          <!-- BLOCO 1: O GATILHO -->
+          <div class="bloco-editor">
+            <h3>O gatilho</h3>
+            <p class="subtitulo">O que faz a DM disparar</p>
+
+            <div class="campo">
+              <label for="edt-nome">Nome da automação</label>
+              <input type="text" id="edt-nome" placeholder="Ex: Promoção de lançamento" />
+            </div>
+
+            <div class="campo">
+              <label>Palavras que ativam</label>
+              <div class="campo-tags" id="edt-tags-container">
+                <input type="text" id="edt-tag-input" placeholder="Digite e aperte Enter" />
+              </div>
+            </div>
+
+            <div class="linha-interruptor">
+              <div>
+                <div style="font-weight:500; font-size:14px;">Qualquer palavra ativa</div>
+                <div class="subtitulo">Ignora as palavras acima e ativa em qualquer comentário</div>
+              </div>
+              <label class="interruptor">
+                <input type="checkbox" id="edt-match-any" />
+                <span class="trilho"></span>
+              </label>
+            </div>
+
+            <div class="campo">
+              <label>Em quais posts</label>
+              <div id="edt-posts-lista" class="cartao" style="max-height:160px; overflow-y:auto;">
+                <p class="subtitulo" style="margin:0;">Carregando posts...</p>
+              </div>
+              <p class="ajuda">Vazio = vale pra todos os posts</p>
+            </div>
+
+            <div class="campo">
+              <label for="edt-resposta-publica">Resposta no comentário</label>
+              <textarea id="edt-resposta-publica" placeholder="Ex: te chamei no direto! 💌"></textarea>
+            </div>
+
+            <div id="edt-variacoes-lista"></div>
+            <button type="button" class="btn btn-pequeno" id="btn-add-variacao">+ Adicionar variação A/B</button>
+          </div>
+
+          <!-- BLOCO 2: A RESPOSTA -->
+          <div class="bloco-editor">
+            <h3>A resposta</h3>
+            <p class="subtitulo">O que a pessoa recebe na DM</p>
+
+            <div class="campo">
+              <label for="edt-mensagem1">Sua mensagem</label>
+              <textarea id="edt-mensagem1" placeholder="Escreva a primeira mensagem que a pessoa recebe"></textarea>
+              <div class="barra-emoji">
+                <button type="button" data-emoji="🫶">🫶</button>
+                <button type="button" data-emoji="👀">👀</button>
+                <button type="button" data-emoji="😍">😍</button>
+                <button type="button" data-emoji="🥰">🥰</button>
+                <button type="button" data-emoji="😂">😂</button>
+                <button type="button" data-emoji="😮">😮</button>
+                <button type="button" data-emoji="🔥">🔥</button>
+                <button type="button" data-emoji="✨">✨</button>
+                <button type="button" data-emoji="💌">💌</button>
+                <button type="button" data-emoji="👉">👉</button>
+                <button type="button" data-emoji="🙌">🙌</button>
+                <button type="button" data-emoji="💕">💕</button>
+              </div>
+            </div>
+
+            <div class="linha-interruptor">
+              <div style="font-weight:500; font-size:14px;">Botão na mensagem</div>
+              <label class="interruptor">
+                <input type="checkbox" id="edt-botao-ativo" checked />
+                <span class="trilho"></span>
+              </label>
+            </div>
+
+            <div id="edt-botao-config">
+              <div class="campo">
+                <label for="edt-botao-texto">Texto do botão</label>
+                <input type="text" id="edt-botao-texto" maxlength="20" placeholder="Ex: Quero saber mais" />
+                <div class="contador-caracteres"><span id="edt-botao-texto-contador">0</span>/20</div>
+              </div>
+
+              <div class="campo">
+                <label for="edt-botao-modo">O que o botão faz quando ela toca</label>
+                <select id="edt-botao-modo">
+                  <option value="link">Um link</option>
+                  <option value="continue">Continua a conversa</option>
+                </select>
+              </div>
+
+              <div class="campo" id="edt-botao-link-campo">
+                <label for="edt-botao-link">Link</label>
+                <textarea id="edt-botao-link" class="textarea-link" placeholder="https://..."></textarea>
+              </div>
+
+              <div id="edt-construtor" class="escondido">
+                <div class="mensagem-referencia">
+                  <strong>Mensagem 1:</strong> <span id="edt-ref-mensagem1">(escreva a mensagem acima)</span>
+                </div>
+                <div id="edt-passos-lista"></div>
+                <button type="button" class="btn btn-pequeno" id="btn-add-passo">+ Adicionar mensagem</button>
+              </div>
+            </div>
+
+            <div class="campo" style="margin-top:16px;">
+              <label for="edt-asset">Anexar um arquivo (opcional)</label>
+              <select id="edt-asset">
+                <option value="">Nenhum</option>
+              </select>
+              <p class="ajuda">Arquivos cadastrados na tabela ig_assets aparecem aqui.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- PRÉVIA AO VIVO -->
+        <div class="modal-editor-preview">
+          <div class="rotulo" style="margin-bottom:12px;">Prévia ao vivo</div>
+          <div class="celular">
+            <div class="celular-tela" id="preview-celular">
+              <div class="celular-topo">Direct</div>
+              <div class="celular-vazio">Comece escrevendo sua mensagem</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:10px; padding:16px 20px; border-top:1px solid var(--cor-borda);">
+        <div id="aviso-editor" class="aviso aviso-erro escondido" style="margin-right:auto;"></div>
+        <button class="btn" id="btn-cancelar-editor">Cancelar</button>
+        <button class="btn btn-primario" id="btn-salvar-automacao">Salvar automação</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/media.js"></script>
+  <script src="js/metrics.js"></script>
+  <script src="js/automations.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
