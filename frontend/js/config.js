@@ -7,8 +7,9 @@
 // ============================================================================
 
 const CONFIG = {
-  SUPABASE_URL: "SUA_SUPABASE_URL_AQUI",
-  SUPABASE_ANON_KEY: "SUA_SUPABASE_ANON_KEY_AQUI",
+  SUPABASE_URL: "https://tgperpbuvygibnirdpca.supabase.co",
+  SUPABASE_ANON_KEY:
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRncGVycGJ1dnlnaWJuaXJkcGNhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU4NjU0NjgsImV4cCI6MjEwMTQ0MTQ2OH0.rxOT21A8kdW5JVmx6WMxjoGaaSj1YdQJlP_hXJ7XC10",
 };
 
 // Detecta se está rodando em localhost/arquivo local (modo de teste) ou num
