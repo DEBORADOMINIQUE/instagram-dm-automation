@@ -28,7 +28,7 @@ Deno.serve(async (req) => {
   try {
     const campos = "id,caption,media_type,media_url,thumbnail_url,timestamp,permalink";
     const resp = await fetch(
-      `${GRAPH_BASE}/${IG_ACCOUNT_ID}/media?fields=${campos}&limit=30&access_token=${IG_ACCESS_TOKEN}`,
+      `${GRAPH_BASE}/${IG_ACCOUNT_ID}/media?fields=${campos}&limit=100&access_token=${IG_ACCESS_TOKEN}`,
     );
     const json = await resp.json();
     if (!resp.ok) throw new Error(json?.error?.message ?? "erro ao listar posts");
