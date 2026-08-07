@@ -17,6 +17,12 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const IG_ACCESS_TOKEN = Deno.env.get("IG_ACCESS_TOKEN") ?? "";
 const IG_ACCOUNT_ID = Deno.env.get("IG_ACCOUNT_ID") ?? "";
+// o Meta às vezes identifica a própria conta com um id diferente do
+// IG_ACCOUNT_ID (formato de página, usado no campo "from" de comentários),
+// então aceitamos uma lista extra de ids que também contam como "sou eu".
+const IG_ACCOUNT_IDS_PROPRIOS = new Set(
+  [IG_ACCOUNT_ID, ...(Deno.env.get("IG_ACCOUNT_ID_EXTRA") ?? "").split(",").map((s) => s.trim())].filter(Boolean),
+);
 const APP_SECRET = Deno.env.get("APP_SECRET") ?? "";
 const APP_SECRET_ENFORCE = (Deno.env.get("APP_SECRET_ENFORCE") ?? "false") === "true";
 const VERIFY_TOKEN = Deno.env.get("VERIFY_TOKEN") ?? "";
@@ -157,7 +163,7 @@ async function handleComment(value: any) {
   await marcarProcessado(`comment:${commentId}`);
 
   // 2. ignora comentário feito pela própria conta (dono do post)
-  if (IG_ACCOUNT_ID && fromId === IG_ACCOUNT_ID) return;
+  if (IG_ACCOUNT_IDS_PROPRIOS.has(fromId)) return;
 
   // 3. acha a automação certa (palavra-chave + post)
   const automation = await encontrarAutomacao(texto, mediaId);
