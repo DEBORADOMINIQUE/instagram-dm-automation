@@ -48,14 +48,21 @@ const DB = {
     if (!cliente) return { ok: false, motivo: "Supabase não configurado ainda. Siga o LEIA-ME pra ligar o banco." };
     try {
       const linha = { ...automacao, updated_at: new Date().toISOString() };
-      const { error } = automacao.id
-        ? await cliente.from("ig_automations").update(linha).eq("id", automacao.id)
-        : await cliente.from("ig_automations").insert(linha);
+      let error;
+      if (automacao.id) {
+        ({ error } = await cliente.from("ig_automations").update(linha).eq("id", automacao.id));
+      } else {
+        // numa automação nova o id precisa ficar de fora (não só null), pra o
+        // banco gerar o uuid sozinho: um id explicitamente null viola a coluna
+        delete linha.id;
+        ({ error } = await cliente.from("ig_automations").insert(linha));
+      }
       if (error) throw error;
       return { ok: true };
     } catch (erro) {
       console.warn("não foi possível salvar a automação:", erro);
-      return { ok: false, motivo: "Não foi possível salvar. Confira a conexão com o Supabase." };
+      const motivo = erro?.message ? `Não foi possível salvar: ${erro.message}` : "Não foi possível salvar. Confira a conexão com o Supabase.";
+      return { ok: false, motivo };
     }
   },
 
